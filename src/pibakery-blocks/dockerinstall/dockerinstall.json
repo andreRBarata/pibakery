@@ -1,0 +1,15 @@
+{
+  "name": "dockerinstall",
+  "text": "Install Docker\\n Internet connection required.",
+  "script": "dockerinstall.sh",
+  "network": true,
+  "continue": true,
+  "type": "software",
+  "category": "software",
+  "supportedOperatingSystems": [
+    "raspbian-pibakery.img",
+    "raspbian-lite-pibakery.img"
+  ],
+  "shortDescription": "Install docker. Internet connection required.",
+  "longDescription": "Install docker deamon."
+}

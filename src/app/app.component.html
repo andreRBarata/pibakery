@@ -1,0 +1,62 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <div class="input-group">
+          <input type="file" class="form-control" name="workspace" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="modal.close('Save click')"
+    >
+      Save
+    </button>
+  </div>
+</ng-template>
+
+<div id="header">
+  <div id="logo">PiBakery</div>
+  <!--
+  <button class="btn headerBtn" id="flashSD">
+    <img src="assets/img/write-to-sd.png" class="sdImage" />
+    <p>Write</p>
+  </button>
+  <button class="btn headerBtn" id="updateSD">
+    <img src="assets/img/update-sd.png" class="sdImage" />
+    <p>Update</p>
+  </button>
+  <button class="btn headerBtn" id="loadSD">
+    <img src="assets/img/load-sd.png" class="sdImage" />
+    <p>Load</p>
+  </button>
+  -->
+
+  <button class="headerBtn" id="export" (click)="export()">
+    <img src="assets/img/export.png" class="sdImage" />
+    <p>Export</p>
+  </button>
+  <button class="headerBtn" id="import" (click)="import()">
+    <img src="assets/img/import.png" class="sdImage" />
+    <p>Import</p>
+  </button>
+</div>
+
+<app-blockly />
+
+<div id="credits">
+  <p>www.PiBakery.org</p>
+  <p>&#64;PiBakery</p>
+</div>
