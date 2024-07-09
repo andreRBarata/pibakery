@@ -1,0 +1,19 @@
+{
+  "blocks": {
+    "languageVersion": 0,
+    "blocks": [
+      {
+        "type": "onfirstboot",
+        "id": "onfirstboot",
+        "x": 301,
+        "y": 200,
+        "next": {
+          "block": {
+            "type": "dockerinstall",
+            "id": "dockerinstall"
+          }
+        }
+      }
+    ]
+  }
+}

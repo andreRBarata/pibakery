@@ -7,7 +7,7 @@ export interface ScriptData {
   nextBoot: string;
   blocks: string[];
   blockPaths: string[];
-  json: string 
+  json: string;
   waitForNetwork: [boolean, boolean, boolean];
 }
 
@@ -20,7 +20,7 @@ export const generateScript = async (
   const neededBlocks = [];
   const networkRequiredPosition = [-1, -1, -1];
   const wifiPosition = [-1, -1, -1];
-  const waitForNetwork: [ boolean, boolean, boolean ] = [false, false, false];
+  const waitForNetwork: [boolean, boolean, boolean] = [false, false, false];
 
   let firstBootCode = '';
   let everyBootCode = '';
@@ -193,6 +193,6 @@ export const generateScript = async (
     blocks: neededBlocks,
     blockPaths,
     waitForNetwork,
-    json: JSON.stringify(code)
+    json: JSON.stringify(Blockly.serialization.workspaces.save(workspace))
   };
 };

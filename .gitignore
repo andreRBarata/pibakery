@@ -6,6 +6,10 @@
 /out-tsc
 /bazel-out
 
+/src/**/*.js
+/src/**/*.js.map
+
+
 # Node
 /node_modules
 npm-debug.log
