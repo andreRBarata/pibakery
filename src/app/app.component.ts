@@ -9,22 +9,48 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AppComponent {
   @ViewChild(BlocklyComponent) private blockly!: BlocklyComponent;
-  @ViewChild('content') private content!: TemplateRef<any>;
+  @ViewChild('importModal') private importModal!: TemplateRef<any>;
+  @ViewChild('exportModal') private exportModal!: TemplateRef<any>;
 
   private modalService = inject(NgbModal);
 
+  public exportedWorkspace!: string;
+
+
+  readFile<T = any>(file: File): Promise<T> {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+
+      fileReader.addEventListener('loadend', () =>
+        resolve(JSON.parse((fileReader.result || '').toString()))
+      );
+      fileReader.addEventListener('error', reject);
+
+      fileReader.readAsText(file);
+    });
+  }
+
+  createFileUrl(fileContents: string) {
+    const fileType = 'text/json';
+
+    if (!fileContents) {
+      return '';
+    }
+
+    return `data:${fileType};charset=utf-8,${encodeURIComponent(fileContents)}`;
+  }
+
   import() {
-    this.modalService.open(this.content);
+    const { result } = this.modalService.open(this.importModal);
+
+    result
+      .then((file) => this.readFile(file))
+      .then((fileContents) => this.blockly.importWorkspace(fileContents));
   }
 
   export() {
-    const workspace = this.blockly.exportWorkspace();
-    const fileData = JSON.stringify(workspace, undefined, 3);
-    const fileType = 'text/json';
+    this.exportedWorkspace = JSON.stringify(this.blockly.exportWorkspace(), undefined, 3);
 
-    const blob = new Blob([fileData], { type: fileType });
-    const url = URL.createObjectURL(blob);
-
-    window.open(url);
+    this.modalService.open(this.exportModal);
   }
 }

@@ -1,5 +1,6 @@
-<ng-template #content let-modal>
+<ng-template #importModal let-modal>
   <div class="modal-header">
+    <h4 class="modal-title">Import Recipe</h4>
     <button
       type="button"
       class="btn-close"
@@ -8,22 +9,40 @@
     ></button>
   </div>
   <div class="modal-body">
-    <form>
-      <div class="mb-3">
-        <div class="input-group">
-          <input type="file" class="form-control" name="workspace" />
-        </div>
+    <div class="mb-3">
+      <div class="input-group">
+        <input #recipe type="file" class="form-control" name="recipe" />
       </div>
-    </form>
+    </div>
   </div>
   <div class="modal-footer">
     <button
-      type="button"
+      type="submit"
       class="btn btn-outline-secondary"
-      (click)="modal.close('Save click')"
+      (click)="modal.close(recipe.files?.[0])"
     >
-      Save
+      Import
     </button>
+  </div>
+</ng-template>
+
+<ng-template #exportModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Export Recipe</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="mb-3">
+      <pre><code>{{exportedWorkspace}}</code></pre>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="btn btn-outline-secondary" role="button" [href]="createFileUrl(exportedWorkspace)" download="recipe.json">Download</a>
   </div>
 </ng-template>
 
