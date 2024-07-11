@@ -83,7 +83,7 @@ export const copyFileToImage = (
 
   return readFile(source).then((contents) =>
     imageFs.writeFile(destination, contents)
-  );
+  ).then(() => imageFs.chmod(destination, 0o755));
 };
 
 export const imageFsRecursiveMkdir = (imageFs: ImageFs, dirPath: string) =>
@@ -91,7 +91,7 @@ export const imageFsRecursiveMkdir = (imageFs: ImageFs, dirPath: string) =>
     .split(sep)
     .filter((pathSegment) => pathSegment !== '')
     .map((pathSegment, i, splitPath) =>
-      join(...(splitPath.slice(0, i + 1) || []))
+      join('/', ...(splitPath.slice(0, i + 1) || []))
     )
     .reduce(
       (promise, currDirPath) =>

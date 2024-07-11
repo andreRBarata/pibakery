@@ -16,7 +16,6 @@ export class AppComponent {
 
   public exportedWorkspace!: string;
 
-
   readFile<T = any>(file: File): Promise<T> {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
@@ -49,7 +48,11 @@ export class AppComponent {
   }
 
   export() {
-    this.exportedWorkspace = JSON.stringify(this.blockly.exportWorkspace(), undefined, 3);
+    this.exportedWorkspace = JSON.stringify(
+      this.blockly.exportWorkspace(),
+      undefined,
+      3
+    );
 
     this.modalService.open(this.exportModal);
   }
