@@ -17,7 +17,7 @@ const modifyCmdlineTxt = ({ readFile, writeFile }: ImageFs) => {
       fileContents
         .trim()
         .split(' ')
-        .map((field) => field.split('='))
+        .map((field) => field.split(/=(.*)/))
     );
   const toCmdline = (cmdline: Record<string, string>) =>
     Object.entries(cmdline)
