@@ -4,47 +4,47 @@
 export TERM="linux"
 
 # If there are blocks that need a network connection, run waitForNetwork.sh
-if [ -f /boot/PiBakery/waitForNetwork ]
+if [ -f /usr/lib/PiBakery/waitForNetwork ]
 then
   /opt/PiBakery/waitForNetwork.sh || /bin/true
 fi
 
 # Make sure the scripts are executable
-chmod +x /boot/PiBakery/firstBoot.sh || /bin/true
-chmod +x /boot/PiBakery/nextBoot.sh || /bin/true
-chmod +x /boot/PiBakery/everyBoot.sh || /bin/true
+chmod +x /usr/lib/PiBakery/firstBoot.sh || /bin/true
+chmod +x /usr/lib/PiBakery/nextBoot.sh || /bin/true
+chmod +x /usr/lib/PiBakery/everyBoot.sh || /bin/true
 
 # Run the firstBoot script, and prevent it from running again
-if [ -f /boot/PiBakery/runFirstBoot ]
+if [ -f /usr/lib/PiBakery/runFirstBoot ]
 then
-  rm -f /boot/PiBakery/runFirstBoot || /bin/true
+  rm -f /usr/lib/PiBakery/runFirstBoot || /bin/true
   # If we should wait for network, run the waitForNetwork.sh script
-  if [ -f /boot/PiBakery/waitForNetworkFirstBoot ]
+  if [ -f /usr/lib/PiBakery/waitForNetworkFirstBoot ]
   then
     /opt/PiBakery/waitForNetwork.sh || /bin/true
   fi
   /usr/bin/python /opt/PiBakery/removeFirst.py || /bin/true
-  /boot/PiBakery/firstBoot.sh || /bin/true
+  /usr/lib/PiBakery/firstBoot.sh || /bin/true
 fi
 
 # Run the nextBoot script, and prevent it from running again
-if [ -f /boot/PiBakery/runNextBoot ]
+if [ -f /usr/lib/PiBakery/runNextBoot ]
 then
-  rm -f /boot/PiBakery/runNextBoot || /bin/true
+  rm -f /usr/lib/PiBakery/runNextBoot || /bin/true
   # If we should wait for network, run the waitForNetwork.sh script
-  if [ -f /boot/PiBakery/waitForNetworkNextBoot ]
+  if [ -f /usr/lib/PiBakery/waitForNetworkNextBoot ]
   then
     /opt/PiBakery/waitForNetwork.sh || /bin/true
   fi
   /usr/bin/python /opt/PiBakery/removeNext.py || /bin/true
-  /boot/PiBakery/nextBoot.sh || /bin/true
+  /usr/lib/PiBakery/nextBoot.sh || /bin/true
 fi
 
 # Run the everyBoot script
-if [ -f /boot/PiBakery/waitForNetworkEveryBoot ]
+if [ -f /usr/lib/PiBakery/waitForNetworkEveryBoot ]
 then
   /opt/PiBakery/waitForNetwork.sh || /bin/true
 fi
-/boot/PiBakery/everyBoot.sh || /bin/true
+/usr/lib/PiBakery/everyBoot.sh || /bin/true
 
 exit 0

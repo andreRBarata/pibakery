@@ -1,3 +1,2 @@
 #!/bin/bash
-apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+DEBIAN_FRONTEND=noninteractive curl -fsSL https://get.docker.com | sudo sh

@@ -5,123 +5,104 @@ import { interact } from 'balena-image-fs';
 import { copyToImage, expandGlobPaths, promisifyAll } from './helpers';
 import { ImageFs } from '../types';
 
-const createPiBakeryDirectory = ({ mkdir }: ImageFs) =>
-  mkdir('/PiBakery', { recursive: true });
-
-const modifyCmdlineTxt = ({ readFile, writeFile }: ImageFs) => {
-  // move /cmdline.txt to /PiBakery/cmdline.txt.original
-  const source = '/cmdline.txt';
-  const destination = '/PiBakery/cmdline.txt.original';
-  const parseCmdline = (fileContents: string) =>
-    Object.fromEntries(
-      fileContents
-        .trim()
-        .split(' ')
-        .map((field) => field.split(/=(.*)/))
-    );
-  const toCmdline = (cmdline: Record<string, string>) =>
-    Object.entries(cmdline)
-      .map((line) => line.filter((seg) => !!seg).join('='))
-      .join(' ');
-
-  // only do this if /PiBakery/cmdline.txt.original doesn't already exist
-  return readFile(source)
-    .then((buffer) =>
-      writeFile(destination, buffer)
-        .then(() => ({
-          ...parseCmdline(buffer.toString('utf8')),
-          root: '/dev/mmcblk0p1',
-          rootfstype: 'vfat',
-          rootflags: 'umask=000',
-          init: '/PiBakery/pibakery-mount.sh'
-        }))
-        .then((cmdline: Record<string, string>) =>
-          writeFile(source, toCmdline(cmdline), { encoding: 'utf8', flag: 'w' })
-        )
-    )
-    .catch((err) => console.log('cmdline already patched: ', err));
-};
-
 // the drive has been mounted, now write the scripts to it
-const writeBootScripts = (imageFS: ImageFs, data: ScriptData) => {
-  // write scripts, and then unmount and remove kpartx mappings if necessary
-  return expandGlobPaths([
-    {
-      source: join(__dirname, '../resources/busybox'),
-      destination: '/PiBakery/busybox'
-    },
-    {
-      source: join(__dirname, '../resources/pibakery-mount.sh'),
-      destination: '/PiBakery/pibakery-mount.sh'
-    },
-    {
-      source: join(__dirname, '../resources/pibakery-install.sh'),
-      destination: '/PiBakery/pibakery-install.sh'
-    },
+const writeBootScripts = (imageFS: ImageFs, data: ScriptData) =>
+  expandGlobPaths([
     {
       source: join(__dirname, '../../pibakery-raspbian', '**'),
-      destination: '/PiBakery/pibakery-raspbian'
+      destination: '/usr/lib/PiBakery/pibakery-raspbian'
+    },
+    {
+      source: join(
+        __dirname,
+        '../../pibakery-raspbian/etc/systemd/system/pibakery.service'
+      ),
+      destination: '/etc/systemd/system/pibakery.service'
+    },
+    {
+      source: join(__dirname, '../../pibakery-raspbian/opt/**'),
+      destination: '/opt'
     },
     // convert the data object into blocks to copy
     ...data.blockPaths.map((source: string, i: number) => ({
       source: join(__dirname, '../..', source, '**'),
-      destination: join('/PiBakery/blocks/', data.blocks[i])
+      destination: join('/usr/lib/PiBakery/blocks/', data.blocks[i])
     }))
   ])
     .then((workPaths) =>
-      Promise.all(
-        workPaths.map(({ source, destination }) =>
+      Promise.all([
+        ...workPaths.map(({ source, destination }) =>
           copyToImage(imageFS, source, destination)
-        )
-      )
+        ),
+        imageFS.symlink(
+          '/etc/systemd/system/pibakery.service',
+          '/etc/systemd/system/multi-user.target.wants/pibakery.service'
+        ),
+        imageFS
+          .access('/lib/systemd/system/lightdm.service')
+          .then(() =>
+            copyToImage(
+              imageFS,
+              join(
+                __dirname,
+                '../../pibakery-raspbian/lib/systemd/system/lightdm.service'
+              ),
+              '/lib/systemd/system/lightdm.service'
+            )
+          )
+          .catch(() =>
+            copyToImage(
+              imageFS,
+              join(
+                __dirname,
+                '../../pibakery-raspbian/opt/PiBakery/console-lite.sh'
+              ),
+              '/opt/PiBakery/console.sh'
+            )
+          )
+      ])
     )
     .then(() =>
       Promise.all(
         [
           {
-            file: '/PiBakery/everyBoot.sh',
+            file: '/usr/lib/PiBakery/everyBoot.sh',
             contents: data.everyBoot
           },
           {
-            file: '/PiBakery/firstBoot.sh',
+            file: '/usr/lib/PiBakery/firstBoot.sh',
             contents: data.firstBoot
           },
           {
-            file: '/PiBakery/nextBoot.sh',
+            file: '/usr/lib/PiBakery/nextBoot.sh',
             contents: data.nextBoot
           },
           {
-            file: '/PiBakery/recipe.json',
+            file: '/usr/lib/PiBakery/recipe.json',
             contents: data.json
           },
           {
-            file: '/PiBakery/runFirstBoot',
+            file: '/usr/lib/PiBakery/runFirstBoot',
             contents: ''
           },
           {
-            file: '/PiBakery/runNextBoot',
+            file: '/usr/lib/PiBakery/runNextBoot',
             contents: ''
           },
           ...['EveryBoot', 'FirstBoot', 'NextBoot']
             .filter((fileName, i) => !!data.waitForNetwork[i])
             .map((fileName) => ({
-              file: join('/PiBakery/', 'waitForNetwork' + fileName),
+              file: join('/usr/lib/PiBakery/', 'waitForNetwork' + fileName),
               contents: ''
             }))
         ].map(({ file, contents }) => imageFS.writeFile(file, contents))
       )
     );
-};
 
-const installPiBakery = (imagePath: string, data: ScriptData) => {
-  return interact(imagePath, 1, (imageFS) => {
-    const promisifiedFS = promisifyAll(imageFS);
-
-    return createPiBakeryDirectory(promisifiedFS)
-      .then(() => modifyCmdlineTxt(promisifiedFS))
-      .then(() => writeBootScripts(promisifiedFS, data));
-  });
-};
+const installPiBakery = (imagePath: string, data: ScriptData) =>
+  interact(imagePath, 2, (imageFS) =>
+    writeBootScripts(promisifyAll(imageFS), data)
+  );
 
 export const updateImage = (imagePath: string, script: ScriptData) =>
   installPiBakery(imagePath, script);

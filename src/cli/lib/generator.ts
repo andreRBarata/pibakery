@@ -30,11 +30,11 @@ Object.entries(blocks).forEach(
   ([blockName, blockJSON]: [string, BlockConfig]) => {
     generator.forBlock[blockName] = (block) => {
       let code =
-        '\n\tchmod 755 /boot/PiBakery/blocks/' +
+        '\n\tchmod 755 /usr/lib/PiBakery/blocks/' +
         blockName +
         '/' +
         blockJSON.script +
-        '\n\t/boot/PiBakery/blocks/' +
+        '\n\t/usr/lib/PiBakery/blocks/' +
         blockName +
         '/' +
         blockJSON.script +

@@ -81,9 +81,9 @@ export const copyFileToImage = (
     destination
   );
 
-  return readFile(source).then((contents) =>
-    imageFs.writeFile(destination, contents)
-  ).then(() => imageFs.chmod(destination, 0o755));
+  return readFile(source)
+    .then((contents) => imageFs.writeFile(destination, contents))
+    .then(() => imageFs.chmod(destination, 0o755));
 };
 
 export const imageFsRecursiveMkdir = (imageFs: ImageFs, dirPath: string) =>

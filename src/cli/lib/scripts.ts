@@ -38,7 +38,7 @@ export const generateScript = async (
       if (currentLine !== '\tNETWORK=True') {
         // add the blockname to our list
         let blockName = currentLine
-          .split('/boot/PiBakery/blocks/')[1]
+          .split('/usr/lib/PiBakery/blocks/')[1]
           .split('/')[0];
         if (neededBlocks.indexOf(blockName) === -1) {
           neededBlocks.push(blockName);
@@ -51,14 +51,14 @@ export const generateScript = async (
             everyBootCode +
             '\n' +
             currentLine.replace('\t', '') +
-            ' >>/boot/PiBakery/everyboot.log 2>&1  || true';
+            ' >>/usr/lib/PiBakery/everyboot.log 2>&1  || true';
           // everyBootCode = everyBootCode + "\necho $(expr $PERCENTAGE \\* " + everyBootCount + " )"
           everyBootCode =
             everyBootCode +
             '\necho XXX\necho $(expr $PERCENTAGE \\* ' +
             everyBootCount +
             ' )\necho "\\nProcessing Every Boot Script\\n\\nRunning Block: ' +
-            currentLine.split('/boot/PiBakery/blocks/')[1].split('/')[0] +
+            currentLine.split('/usr/lib/PiBakery/blocks/')[1].split('/')[0] +
             '"\necho XXX';
         } else if (codeType === 'firstBoot') {
           firstBootCount++;
@@ -66,14 +66,14 @@ export const generateScript = async (
             firstBootCode +
             '\n' +
             currentLine.replace('\t', '') +
-            ' >>/boot/PiBakery/firstboot.log 2>&1 || true';
+            ' >>/usr/lib/PiBakery/firstboot.log 2>&1 || true';
           // firstBootCode = firstBootCode + "\necho $(expr $PERCENTAGE \\* " + firstBootCount + " )"
           firstBootCode =
             firstBootCode +
             '\necho XXX\necho $(expr $PERCENTAGE \\* ' +
             firstBootCount +
             ' )\necho "\\nProcessing First Boot Script\\n\\nRunning Block: ' +
-            currentLine.split('/boot/PiBakery/blocks/')[1].split('/')[0] +
+            currentLine.split('/usr/lib/PiBakery/blocks/')[1].split('/')[0] +
             '"\necho XXX';
         } else if (codeType === 'nextBoot') {
           nextBootCount++;
@@ -81,14 +81,14 @@ export const generateScript = async (
             nextBootCode +
             '\n' +
             currentLine.replace('\t', '') +
-            ' >>/boot/PiBakery/nextboot.log 2>&1 || true';
+            ' >>/usr/lib/PiBakery/nextboot.log 2>&1 || true';
           // nextBootCode = nextBootCode + "\necho $(expr $PERCENTAGE \\* " + nextBootCount + " )"
           nextBootCode =
             nextBootCode +
             '\necho XXX\necho $(expr $PERCENTAGE \\* ' +
             nextBootCount +
             ' )\necho "\\nProcessing Next Boot Script\\n\\nRunning Block: ' +
-            currentLine.split('/boot/PiBakery/blocks/')[1].split('/')[0] +
+            currentLine.split('/usr/lib/PiBakery/blocks/')[1].split('/')[0] +
             '"\necho XXX';
         }
 

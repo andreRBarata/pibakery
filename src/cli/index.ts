@@ -14,14 +14,16 @@ program
     Blockly.serialization.workspaces.load(require(recipe), workspace);
 
     generateScript(generator, workspace)
-      .then((scripts) =>
-        createImage(
+      .then((scripts) => {
+        console.log(scripts);
+
+        return createImage(
           baseImage,
           destination ||
-            join(dirname(baseImage), basename(recipe, 'json') + '.img'),
+            join(dirname(baseImage), basename(recipe, '.json') + '.img'),
           scripts
-        )
-      )
+        );
+      })
       .then(() => console.log('Image Created'));
   });
 
