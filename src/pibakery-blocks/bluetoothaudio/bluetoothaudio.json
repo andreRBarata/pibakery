@@ -1,0 +1,21 @@
+{
+  "name": "bluetoothaudio",
+  "text": "Make device a bluetooth audio receiving visible as %1",
+  "script": "bluetoothaudio.sh",
+  "network": true,
+  "continue": true,
+  "type": "software",
+  "category": "software",
+  "args": [
+    {
+      "type": "text",
+      "default": "raspi"
+    }
+  ],
+  "supportedOperatingSystems": [
+    "raspbian-pibakery.img",
+    "raspbian-lite-pibakery.img"
+  ],
+  "shortDescription": "Add bluetooth audio receiving capabilities.",
+  "longDescription": "Add bluetooth audio receiving capabilities."
+}
