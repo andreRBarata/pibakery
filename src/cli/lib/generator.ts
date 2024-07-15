@@ -28,7 +28,7 @@ generator.forBlock['onnextboot'] = (block, _generator) =>
 
 Object.entries(blocks).forEach(
   ([blockName, blockJSON]: [string, BlockConfig]) => {
-    generator.forBlock[blockName] = (block) => {
+    generator.forBlock[blockName] = (block, _generator) => {
       let code =
         '\n\tchmod 755 /usr/lib/PiBakery/blocks/' +
         blockName +
@@ -54,7 +54,13 @@ Object.entries(blocks).forEach(
         code = code + '\n\tNETWORK=True';
       }
 
-      return code;
+      return (
+        code + ' ' +
+        block
+          .getChildren(true)
+          .map((child) => _generator.blockToCode(child))
+          .join()
+      );
     };
   }
 );

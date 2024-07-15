@@ -1,16 +1,13 @@
 #!/usr/bin/python
-# Removes the nextBoot xml from blockly
+# Removes the nextBoot json from blockly
 
-from xml.dom import minidom
+import json
 
-xmldoc = minidom.parse("/boot/PiBakery/blocks.xml")
-root = xmldoc.documentElement
+with open("/usr/lib/PiBakery/blocks.json", "wb") as f:
+  lines = f.readlines()
+  blocks = json.loads(lines)
+  onnextbootkey = (key for key,value in blocks.blocks if value.type == 'onnextboot')
 
-blocks = xmldoc.getElementsByTagName("block")
-for block in blocks:
-  if block.hasAttribute("type"):
-    if block.getAttribute("type") == "onnextboot":
-      root.removeChild(block)
+  del blocks.blocks[onnextbootkey]
 
-with open("/boot/PiBakery/blocks.xml", "wb") as blockfile:
-  root.writexml(blockfile)
+  f.writelines(json.dumps(blocks))

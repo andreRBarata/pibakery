@@ -35,7 +35,7 @@
     },
     {
       "type": "menu",
-      "options": ["pi", "root"]
+      "options": ["user", "root"]
     }
   ],
   "network": false,

@@ -1,19 +1,13 @@
 #!/usr/bin/python
-# Removes the firstBoot xml from blockly
+# Removes the firstBoot json from blockly
 
-from xml.dom import minidom
+import json
 
-xmldoc = minidom.parse("/usr/lib/PiBakery/blocks.xml")
-root = xmldoc.documentElement
+with open("/usr/lib/PiBakery/blocks.json", "wb") as f:
+  lines = f.readlines()
+  blocks = json.loads(lines)
+  onfirstbootkey = (key for key,value in blocks.blocks if value.type == 'onfirstboot')
 
-blocks = xmldoc.getElementsByTagName("block")
-for block in blocks:
-  if block.hasAttribute("type"):
-    if block.getAttribute("type") == "onfirstboot":
-      root.removeChild(block)
+  del blocks.blocks[onfirstbootkey]
 
-firstboot = xmldoc.getElementsByTagName("firstboot")[0]
-firstboot.firstChild.replaceWholeText("0")
-
-with open("/usr/lib/PiBakery/blocks.xml", "wb") as blockfile:
-  root.writexml(blockfile)
+  f.writelines(json.dumps(blocks))
