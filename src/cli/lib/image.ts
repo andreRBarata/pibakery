@@ -110,7 +110,7 @@ const installPiBakery = (
   includedDirs: Array<{ source: string; destination: string }> = []
 ) =>
   interact(imagePath, 2, (imageFS) =>
-    writeBootScripts(promisifyAll(imageFS), data)
+    writeBootScripts(promisifyAll(imageFS), data, includedDirs)
   );
 
 export const updateImage = (
