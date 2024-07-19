@@ -1,6 +1,6 @@
 {
   "name": "bluetoothaudio",
-  "text": "Make device a bluetooth audio receiving visible as %1",
+  "text": "Make device a bluetooth audio receiving visible as %1 with a pin of %2",
   "script": "bluetoothaudio.sh",
   "network": true,
   "continue": true,
@@ -10,6 +10,10 @@
     {
       "type": "text",
       "default": "raspi"
+    },
+    {
+      "type": "text",
+      "default": "1234"
     }
   ],
   "supportedOperatingSystems": [

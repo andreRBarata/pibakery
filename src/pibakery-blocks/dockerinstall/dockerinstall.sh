@@ -6,5 +6,7 @@ sudo sh -eux <<EOF
 apt-get install -y uidmap
 EOF
 
+$setuptool=$(which dockerd-rootless-setuptool.sh)
 
-exec sudo -u $(users) -- "dockerd-rootless-setuptool.sh install"
+
+exec sudo -u $(users) -- "$setuptool install"

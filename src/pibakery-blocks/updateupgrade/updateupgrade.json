@@ -1,6 +1,6 @@
 {
   "name": "updateupgrade",
-  "text": "Upgrade all installed packages\\nRequires internet connection.",
+  "text": "Upgrade all installed packages\\nRequires internet connection",
   "script": "updateupgrade.sh",
   "args": [],
   "network": true,

@@ -1,12 +1,16 @@
 import * as Fs from 'fs/promises';
-import { join, relative } from 'path';
+import { join } from 'path';
 import { ScriptData } from './scripts';
 import { interact } from 'balena-image-fs';
 import { copyToImage, expandGlobPaths, promisifyAll } from './helpers';
 import { ImageFs } from '../types';
 
 // the drive has been mounted, now write the scripts to it
-const writeBootScripts = (imageFS: ImageFs, data: ScriptData) =>
+const writeBootScripts = (
+  imageFS: ImageFs,
+  data: ScriptData,
+  includedDirs: Array<{ source: string; destination: string }> = []
+) =>
   expandGlobPaths([
     {
       source: join(__dirname, '../../pibakery-raspbian', '**'),
@@ -27,7 +31,8 @@ const writeBootScripts = (imageFS: ImageFs, data: ScriptData) =>
     ...data.blockPaths.map((source: string, i: number) => ({
       source: join(__dirname, '../..', source, '**'),
       destination: join('/usr/lib/PiBakery/blocks/', data.blocks[i])
-    }))
+    })),
+    ...includedDirs
   ])
     .then((workPaths) =>
       Promise.all([
@@ -99,19 +104,27 @@ const writeBootScripts = (imageFS: ImageFs, data: ScriptData) =>
       )
     );
 
-const installPiBakery = (imagePath: string, data: ScriptData) =>
+const installPiBakery = (
+  imagePath: string,
+  data: ScriptData,
+  includedDirs: Array<{ source: string; destination: string }> = []
+) =>
   interact(imagePath, 2, (imageFS) =>
     writeBootScripts(promisifyAll(imageFS), data)
   );
 
-export const updateImage = (imagePath: string, script: ScriptData) =>
-  installPiBakery(imagePath, script);
+export const updateImage = (
+  imagePath: string,
+  script: ScriptData,
+  includedDirs: Array<{ source: string; destination: string }> = []
+) => installPiBakery(imagePath, script, includedDirs);
 
 export const createImage = (
   baseImagePath: string,
   imageDestination: string,
-  script: ScriptData
+  script: ScriptData,
+  includedDirs: Array<{ source: string; destination: string }> = []
 ) =>
   Fs.copyFile(baseImagePath, imageDestination).then(() =>
-    installPiBakery(imageDestination, script)
+    installPiBakery(imageDestination, script, includedDirs)
   );

@@ -56,7 +56,6 @@ Object.entries(blocks).forEach(
 
       return (
         code +
-        ' ' +
         block
           .getChildren(true)
           .map((child) => _generator.blockToCode(child))

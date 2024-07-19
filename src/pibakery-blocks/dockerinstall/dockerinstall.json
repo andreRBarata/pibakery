@@ -1,6 +1,6 @@
 {
   "name": "dockerinstall",
-  "text": "Install Docker\\n Internet connection required.",
+  "text": "Install Docker\\nRequires internet connection",
   "script": "dockerinstall.sh",
   "network": true,
   "continue": true,
