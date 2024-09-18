@@ -4,9 +4,6 @@ apt-get install -y --no-install-recommends pulseaudio pulseaudio-module-bluetoot
 usermod -a -G bluetooth $(users)
 systemctl --user enable pulseaudio
 
-echo "* $2\n" > "/etc/bluetooth/pin.conf"
-chmod 600 "/etc/bluetooth/pin.conf"
-
 # Bluetooth settings
 tee /etc/bluetooth/main.conf >/dev/null <<'EOF'
 [General]

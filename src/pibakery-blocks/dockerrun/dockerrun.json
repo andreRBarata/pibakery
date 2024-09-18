@@ -1,0 +1,28 @@
+{
+  "name": "dockerrun",
+  "text": "Run Docker Image\\nImage: %1\\nContainer Name: %2\\nFlags: %3\\nRequires internet connection",
+  "script": "dockerRun.sh",
+  "args": [
+    {
+      "type": "text",
+      "default": "image"
+    },
+    {
+      "type": "text",
+      "default": "container-name"
+    },
+    {
+      "type": "text"
+    }
+  ],
+  "network": true,
+  "continue": true,
+  "type": "software",
+  "category": "software",
+  "supportedOperatingSystems": [
+    "raspbian-pibakery.img",
+    "raspbian-lite-pibakery.img"
+  ],
+  "shortDescription": "Run Docker Image. Internet connection required.",
+  "longDescription": "Run Docker Image."
+}

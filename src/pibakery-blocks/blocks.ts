@@ -29,6 +29,8 @@ import waitfornetwork from './waitfornetwork/waitfornetwork.json';
 import wifisetup from './wifisetup/wifisetup.json';
 import dockerinstall from './dockerinstall/dockerinstall.json';
 import bluetoothaudio from './bluetoothaudio/bluetoothaudio.json';
+import noipduc from './noipduc/noipduc.json';
+import dockerrun from './dockerrun/dockerrun.json';
 
 export const blocks = {
   authorizekey,
@@ -61,5 +63,7 @@ export const blocks = {
   waitfornetwork,
   wifisetup,
   dockerinstall,
-  bluetoothaudio
+  bluetoothaudio,
+  noipduc,
+  dockerrun
 };

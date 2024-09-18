@@ -1,0 +1,26 @@
+{
+  "name": "noipduc",
+  "text": "Install the No-IP Dynamic Update Client\\nWith Username: %1\\nAnd Password: %2\\nFor Domain: %3\\nRequires internet connection",
+  "script": "noipduc.sh",
+  "args": [
+    {
+      "type": "text"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "text"
+    }
+  ],
+  "network": true,
+  "continue": true,
+  "type": "network",
+  "category": "network",
+  "supportedOperatingSystems": [
+    "raspbian-pibakery.img",
+    "raspbian-lite-pibakery.img"
+  ],
+  "shortDescription": "Install the No-IP Dynamic Update Client and start-up service. This block requires an internet connection to work.",
+  "longDescription": "Install the No-IP Dynamic Update Client and start-up service. This block requires an internet connection to work."
+}
