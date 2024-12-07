@@ -18,7 +18,7 @@ ExecStop=/usr/bin/pumount /dev/%I" > /lib/systemd/system/usbstick-handler@.servi
 echo '#!/bin/bash
  
 PART=$1
-FS_LABEL=`lsblk -o name,label | grep ${PART} | awk '{print \$2}'`
+FS_LABEL=`lsblk -o name,label | grep ${PART} | awk "{print \$2}"`
  
 if [ -z ${FS_LABEL} ]
 then
