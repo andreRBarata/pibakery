@@ -87,6 +87,10 @@ const writeBootScripts = (
             contents: data.json
           },
           {
+            file: '/usr/lib/PiBakery/blocks.json',
+            contents: data.json
+          },
+          {
             file: '/usr/lib/PiBakery/runFirstBoot',
             contents: ''
           },

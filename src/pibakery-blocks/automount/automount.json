@@ -1,14 +1,13 @@
 {
-    "name": "automount",
-    "text": "Make USB devices automatically mount\\nRequires restart to take effect",
-    "script": "automount.sh",
-    "args": [],
-    "network": true,
-    "continue": true,
-    "type": "setting",
-    "category": "setting",
-    "supportedOperatingSystems": ["raspbian-pibakery.img"],
-    "shortDescription": "Make USB devices automatically mount in the /media folder. Requires reboot to take effect",
-    "longDescription": "Make USB devices automatically mount in the /media folder. Requires reboot to take effect"
-  }
-  
+  "name": "automount",
+  "text": "Make USB devices automatically mount\\nRequires restart to take effect",
+  "script": "automount.sh",
+  "args": [],
+  "network": true,
+  "continue": true,
+  "type": "setting",
+  "category": "setting",
+  "supportedOperatingSystems": ["raspbian-pibakery.img"],
+  "shortDescription": "Make USB devices automatically mount in the /media folder. Requires reboot to take effect",
+  "longDescription": "Make USB devices automatically mount in the /media folder. Requires reboot to take effect"
+}

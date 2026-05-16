@@ -31,6 +31,8 @@ import dockerinstall from './dockerinstall/dockerinstall.json';
 import bluetoothaudio from './bluetoothaudio/bluetoothaudio.json';
 import noipduc from './noipduc/noipduc.json';
 import dockerrun from './dockerrun/dockerrun.json';
+import automount from './automount/automount.json';
+import sshkeyallow from './sshkeyallow/sshkeyallow.json';
 
 export const blocks = {
   authorizekey,
@@ -65,5 +67,7 @@ export const blocks = {
   dockerinstall,
   bluetoothaudio,
   noipduc,
-  dockerrun
+  dockerrun,
+  automount,
+  sshkeyallow
 };
